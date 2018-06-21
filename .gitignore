@@ -1,4 +1,6 @@
 /node_modules
-/tmp
 Test.txt
 .DS_Store
+*.txt
+/tmp/*.csv
+/tmp/*.json
