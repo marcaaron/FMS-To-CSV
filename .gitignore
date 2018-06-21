@@ -2,5 +2,5 @@
 Test.txt
 .DS_Store
 *.txt
-/tmp/*.csv
-/tmp/*.json
+*.csv
+*.json
