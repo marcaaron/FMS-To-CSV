@@ -3,101 +3,47 @@ module.exports = (doubleLine) => {
       // Init Object
       const obj = { };
       // Split into 2 lines
-      const lines = doubleLine;
-      // Declare line one and splice out the property number orig id and subclass
-      let line1 = lines[0].replace(/(\d{10}) (\d{3})\s+\d+\sSUBCL:\s{3}(\d{6})/,(_,propertyNumber, origId, subcl)=>{
-        obj.property_num = propertyNumber;
-        obj.orig_id = origId;
-        obj.subclass = subcl;
-        return '';
-      });
+      // const district_code, district_office, loc, unit_code, unit_name, dtl, line1 };
+      // console.log(district_code, district_office, loc);
+      // district_code, district_office, location, unit_code, unit_name, dtl
+      const line1 = doubleLine[0];
+      const line2 = doubleLine[1];
+      const district_code = doubleLine[2];
+      const district_office = doubleLine[3];
+      const location = doubleLine[4];
+      const unit_code = doubleLine[5];
+      const unit_name = doubleLine[6];
+      const dtl = doubleLine[7];
 
-      // Match on Make and replace
-      line1 = line1.replace(/(MAKE:)(\w+)?/, (_, makeText, make)=>{
-        if(make){
-          obj.make = make;
-        }else{
-          obj.make = null;
-        }
-        return '';
-      });
-
-      // Match on Model and replace
-      line1 = line1.replace(/(MODEL:)(\w+)?/, (_, modelText, model)=>{
-        if(model){
-          obj.model = model;
-        }else{
-          obj.model = null;
-        }
-        return '';
-      });
-
-
-      // Match on SER and replace
-      line1 = line1.replace(/(SER:)(\w+)?/, (_, serText, ser)=>{
-        if(ser){
-          obj.serial_num = ser;
-        }else{
-          obj.serial_num = null;
-        }
-        return '';
-      });
-
-      line1 = line1.trim();
-      if(line1){
-        obj.description = line1;
-      }else{
-        obj.description = null;
-      }
-
-      // Start Line 2
-      let line2 = lines[1];
-
-      const acq = lines[1].replace(/(.{74})(\d+)/, (_, prev, acq)=>{
-        obj.acq = acq;
-      });
-
-      const date = lines[1].replace(/(.{77})(\d{2}-\d{2})/, (_, prev, date, index)=>{
-        obj.date = date;
-      });
-
-
-      const cash = lines[1].replace(/(.{80,})(\$)(\d+)?,?(\d+)?.(\d{2})\s{2}(\d{2})?/, (_, prev, dollar, one, two, three, fs, index)=>{
-        obj.cost=`${one ? one : '0'}${two ? two + '.' : '.'}${three}`;
-        if(fs){
-          obj.fs = fs;
-        }else{
-          obj.fs = null;
-        }
-      });
-
-      let decal = lines[1].substr(108,8);
-      decal.trim();
-      obj.decal = decal.length>0 ? decal : null;
-
-      const substr = lines[1].substr(117);
-      let po = substr.substr(0,8);
-      po = po.trim();
-      obj.po = po.length>0 ? po : null;
-
-      let progid = substr.substr(9);
-      progid = progid.trim();
-      obj.prog_id = progid.length>0 ? progid : null;
-
-      const description = lines[1].substr(0,74);
-      const trimWSMid = /\s{2,}/g;
-      obj.description = obj.description.trim().replace(trimWSMid,'') + ' ' + description.trim().replace(trimWSMid,'');
-
-      // Uncomment these to add them back in
-      // obj.line1 = lines[0];
-      // obj.line2 = lines[1];
+      obj.property_num = line1.substr(0,10).trim() || null;
+      obj.orig_id = line1.substr(11,3).trim() || null;
+      obj.qty = line1.substr(14,9).trim() || null;
+      obj.subclass = line1.substr(29, 13).trim() || '';
+      obj.description = `${line1.substr(38, 30).trim() || null}${line2.substr(23, 50).trim() || null}`;
+      obj.make = line1.substr(73,16).trim() || null;
+      obj.model = line1.substr(95, 16).trim() || null;
+      obj.serial_num = line1.substr(115).trim() || null;
+      obj.acq = line2.substr(73,4).trim() || null;
+      obj.date = line2.substr(77,7).trim() || null;
+      obj.cost = line2.substr(82,19).trim() || null;
+      obj.fs = line2.substr(101,6).trim() || null;
+      obj.decal = line2.substr(108,8).trim() || null;
+      obj.po = line2.substr(116,10).trim() || null;
+      obj.prog_id = line2.substr(126).trim() || null;
+      obj.district_code = district_code;
+      obj.district_office = district_office;
+      obj.unit_code = unit_code;
+      obj.unit_name = unit_name;
+      obj.dtl = dtl;
+      obj.location = location;
+      obj.line1 = line1;
+      obj.line2 = line2;
 
       // Test to see if result has the correct number of keys 14 for no lines 16 if the lines are in
-      // const objectkeys = Object.keys(obj);
-      // if(objectkeys.length !== 14){
-      //   console.log(obj, objectkeys.length);
-      // }
-
+      const objectkeys = Object.keys(obj);
+        if(objectkeys.length !== 23){
+          console.log(obj, objectkeys.length);
+        }
       resolve(obj);
   })
 }

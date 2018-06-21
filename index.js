@@ -6,13 +6,21 @@ const jsonfile = require('jsonfile')
 // Parser Function
 const doubleLineToObj = require('./double-line-to-obj');
 
-
 // File Path
 const file = 'Test.txt';
 
 // Temp Variables
 const array = [];
+
 let previous = null;
+
+
+let district_code = null;
+let district_office = null;
+let location = null;
+let unit_code = null;
+let unit_name = null;
+let dtl = null;
 
 // Output File Path
 const output = './tmp/data.json';
@@ -22,12 +30,26 @@ fs.createReadStream(file)
 // Split on carriage return
     .pipe(split(/\r/))
     .on('data', function (current) {
+
+      if(/^DISTRICT OFFICE/.test(current)){
+        district_code = current.substr(16,9).trim() || null;
+        district_office = current.substr(21,49).trim() || null;
+        location = current.substr(79, 13).trim() || null;
+      }
+
+      if(/^SCHOOL\/UNIT/.test(current)){
+        unit_code = current.substr(18,7).trim() || null;
+        unit_name = current.substr(25,45).trim() || null;
+        dtl = current.substr(83, 9).trim() || null;
+      }
+
       // If temp exists (a.k.a. we had a match on the last line)
       // then push the previous line and current line into our array
       if(previous){
-        array.push([previous, current]);
+        array.push([previous, current, district_code, district_office, location, unit_code, unit_name, dtl]);
         previous = null;
       }
+
       // Set previous to the current line if there's a match
       previous = /^\d{10}/.test(current) && current;
     })
