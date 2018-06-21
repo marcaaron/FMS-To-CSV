@@ -20,7 +20,7 @@ Next head to your terminal and type:
 
 This will create a directory where you will place your text file that you'd like to convert to CSV.
 
-Before you can run these scripts you'll also need to install some dependencies. CD into the directory and run the command:
+Before you can run these scripts you'll also need to install some dependencies. CD into the directory you just created by cloning the repository (/FMS-To-CSV) and run the command:
 
 `npm install`
 
@@ -37,30 +37,14 @@ Rename your txt file to `fms.txt` and run the command:
 
 `node index.js`
 
-**Option 2:**
+**Option 2:** (Recommended)
 
 Leave your text file named whatever it is and run the command:
 
 `node index.js <your file name here>`
 
-If everything went smoothly you should have a new directory named `/temp` and a file inside called `data.json`.
+If everything went smoothly you should find two files inside the `/tmp` directory. A CSV and a JSON both either matching the filename you provided or "fms".
 
-If you'd like to turn this into a CSV file then you'll have to run one additional command.
+## Note
 
-`node json2csv.js`
-
-This should create a file called `data.csv` in the same directory as the `data.json` file.
-
-## Notes
-
-If you must run these scripts against multiple files I would suggest you first rename the `data.json` and/or `data.csv` files. If you run the script twice in a row you will end up with duplicate data. So make sure to run each script only once.
-
-e.g.
-
-Run the script.
-
-Rename `data.csv` to `<somethingelse>.csv`
-
-Delete the `data.csv` and `data.json` files.
-
-Re-Run the script on a new text file.
+This program will automatically look for an existing file inside `/tmp` that matches either the filename you provided or the default `fms.txt`. If you attempt to run a script on a previously converted TXT file and it's corresponding CSV file is present in the `/tmp` directory it will ask if you'd like to overwrite it. This will not have any impact on the input TXT file. But I'd recommended to either change the filename of the file you'd like to convert and provide that re: Option 2 above or rename the output file and place it somewhere outside of the `/tmp` directory.
