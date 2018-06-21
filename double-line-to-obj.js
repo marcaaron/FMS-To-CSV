@@ -3,9 +3,6 @@ module.exports = (doubleLine) => {
       // Init Object
       const obj = { };
       // Split into 2 lines
-      // const district_code, district_office, loc, unit_code, unit_name, dtl, line1 };
-      // console.log(district_code, district_office, loc);
-      // district_code, district_office, location, unit_code, unit_name, dtl
       const line1 = doubleLine[0];
       const line2 = doubleLine[1];
       const district_code = doubleLine[2];
