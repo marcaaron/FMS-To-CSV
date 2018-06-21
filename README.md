@@ -1,4 +1,4 @@
-Turns your confusing and useless space delimitted school inventory text documents into friendly JSON or CSV with a simple command-line NodeJS script. Made by request for the state of Hawaii's public school system.
+Turns your confusing and useless space delimitted school inventory text documents into friendly JSON or CSV with a simple command-line NodeJS script.
 
 ## Instructions
 
