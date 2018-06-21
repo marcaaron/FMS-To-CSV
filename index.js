@@ -37,7 +37,6 @@ let dtl = null;
 // File Path
 const file = process.argv[2] || 'fms.txt';
 const filename = file.replace(/\.txt/ig, '');
-
 // Read Stream
 fs.stat(`./tmp/${filename}.csv`, function(err, stat) {
   if(err == null) {
