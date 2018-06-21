@@ -7,7 +7,7 @@ const jsonfile = require('jsonfile')
 const doubleLineToObj = require('./double-line-to-obj');
 
 // File Path
-const file = 'Test.txt';
+const file = process.argv[2] || 'Test.txt';
 
 // Temp Variables
 const array = [];
