@@ -95,8 +95,8 @@ function runScripts(){
   .on('end', function(){
     // Testing our temporary array of lines that begin with a
     // property number and concatenating the next line...
-    const arrayLength = array.length;
     let count = 0;
+    const arrayLength = array.length;
     array.forEach((dblLine)=>{
       doubleLineToObj(dblLine).then(res=>
         jsonfile.writeFile(output, res, {spaces: 4, flag: 'a'}, function(err) {

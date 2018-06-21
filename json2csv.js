@@ -40,6 +40,19 @@ module.exports = (entryCount, filename) => {
   const output = fs.createWriteStream(outputPath, { encoding: 'utf8' });
   const json2csv = new Json2csvTransform(opts, transformOpts)
   .on('end', () =>{
+      const ln = filename.length;
+      const gutter = (32 - (ln*2))/2;
+      let lgutter, rgutter;
+      lgutter = gutter;
+      rgutter = gutter;
+
+      const count = entryCount;
+      const entryGutter = (32 - (count.toString().length*2))/2;
+      let rgutter2 = entryGutter;
+      let lgutter2 = entryGutter;
+      if(entryGutter%2 !== 0){
+        rgutter2 +=1;
+      }
       console.log(`-----------------------------------------------`);
       console.log(`|      Successfully Converted TXT to CSV      |`);
       console.log(`-----------------------------------------------`);
@@ -47,19 +60,5 @@ module.exports = (entryCount, filename) => {
       console.log(`|${' '.repeat(lgutter)}${filename}.txt --> ${filename}.csv${' '.repeat(rgutter)}|`);
       console.log(`-----------------------------------------------`);
   });
-
   const processor = input.pipe(json2csv).pipe(output);
-  const ln = filename.length;
-  const gutter = (32 - (ln*2))/2;
-  let lgutter, rgutter;
-  lgutter = gutter;
-  rgutter = gutter;
-
-  const count = entryCount;
-  const entryGutter = (32 - (count.toString().length*2))/2;
-  let rgutter2 = entryGutter;
-  let lgutter2 = entryGutter;
-  if(entryGutter%2 !== 0){
-    rgutter2 +=1;
-  }
 }
