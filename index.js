@@ -1,8 +1,10 @@
 // Dependencies
 const fs = require('fs');
 const split = require('split');
-const jsonfile = require('jsonfile')
+const jsonfile = require('jsonfile');
+const logUpdate = require('log-update');
 const prompt = require('prompt');
+
 prompt.start();
 
 const schema = {
@@ -14,6 +16,9 @@ const schema = {
     }
   }
 };
+
+// Log Update Frames
+const frames = ['-', '\\', '|', '/'];
 
 // CSV Module
 
@@ -62,7 +67,6 @@ fs.stat(`./tmp/${filename}.csv`, function(err, stat) {
 });
 
 function runScripts(){
-  console.log('Converting TXT to JSON...');
   // Output File Path
   const output = `./tmp/${filename}.json`;
   fs.createReadStream(file)
@@ -97,13 +101,15 @@ function runScripts(){
     // property number and concatenating the next line...
     let count = 0;
     const arrayLength = array.length;
+    let progressBar = '';
     array.forEach((dblLine)=>{
       doubleLineToObj(dblLine).then(res=>
         jsonfile.writeFile(output, res, {spaces: 4, flag: 'a'}, function(err) {
+          const percentage = Math.round((count/arrayLength)*100);
+          logUpdate(`Converting TXT to JSON... ${percentage} %`);
           count++;
           if(count===arrayLength){
             json2csv(arrayLength, filename);
-            console.log('Converting JSON to CSV...');
           }
         })
       );
