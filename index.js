@@ -100,18 +100,21 @@ function runScripts(){
     // Testing our temporary array of lines that begin with a
     // property number and concatenating the next line...
     let count = 0;
+    const data = [];
     const arrayLength = array.length;
     let progressBar = '';
     array.forEach((dblLine)=>{
-      doubleLineToObj(dblLine).then(res=>
-        jsonfile.writeFile(output, res, {spaces: 4, flag: 'a'}, function(err) {
-          const percentage = Math.round((count/arrayLength)*100);
-          logUpdate(`Converting TXT to JSON... ${percentage} %`);
-          count++;
-          if(count===arrayLength){
+      doubleLineToObj(dblLine).then(res=>{
+       data.push(res);
+       count++;
+       const percentage = Math.round((count/arrayLength)*100);
+       logUpdate(`Converting TXT to JSON... ${percentage} %`);
+       if(count===arrayLength){
+         jsonfile.writeFile(output, data, {spaces: 4, flag: 'a'}, function(err) {
             json2csv(arrayLength, filename);
-          }
-        })
+         })
+       }
+      }
       );
     });
   });
