@@ -48,9 +48,13 @@ module.exports = (count, filename) => {
     counter++;
   })
   .on('end', () =>{
+    if(counter!==count){
+      console.log(`There was a problem converting one or more entries!`);
+    }else{
       console.log(`Successfully Converted TXT to CSV`);
       console.log(`Created ${count} entries!`);
-      console.log(`${filename}.txt --> ${filename}.csv`);
+      console.log(`${filename}.txt --> ${filename}.csv`);      
+    }
   });
   const processor = input.pipe(json2csv).pipe(output);
 }
